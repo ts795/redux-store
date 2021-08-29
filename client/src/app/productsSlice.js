@@ -1,25 +1,31 @@
+import { parseAndCheckHttpResponse } from '@apollo/client';
 import { createSlice } from '@reduxjs/toolkit'
 
-export const categoriesSlice = createSlice({
-    name: 'categories',
+export const productsSlice = createSlice({
+    name: 'products',
     initialState: {
-        value: [],
-        currentCategory: '' 
+        value: []
     },
     reducers: {
-        updateCategories: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value = [...action.categories];
-        },
-        updateCurrentCategory: (state, action) => {
-            state.currentCategory = action.currentCategory;
+        updateProducts: {
+            reducer(state, action) {
+                // Redux Toolkit allows us to write "mutating" logic in reducers. It
+                // doesn't actually mutate the state because it uses the immer library,
+                // which detects changes to a "draft state" and produces a brand new
+                // immutable state based off those changes
+                state.value = [...action.payload];
+            },
+            prepare(products) {
+                let productList = products ? products : [];
+                return {
+                    payload: productList
+                }
+            }
         }
     }
 })
 
-export const { updateCategories, updateCurrentCategory } = categoriesSlice.actions
+export const { updateProducts } = productsSlice.actions
+export const selectProducts = state => state.products.value
 
-export default categoriesSlice.reducer
+export default productsSlice.reducer
