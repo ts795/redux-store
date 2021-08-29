@@ -1,5 +1,4 @@
-import { parseAndCheckHttpResponse } from '@apollo/client';
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 export const productsSlice = createSlice({
     name: 'products',
@@ -25,7 +24,7 @@ export const productsSlice = createSlice({
     }
 })
 
-export const { updateProducts } = productsSlice.actions
-export const selectProducts = state => state.products.value
+export const { updateProducts } = productsSlice.actions;
+export const selectProducts = state => state.products.value;
 
 export default productsSlice.reducer

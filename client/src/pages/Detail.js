@@ -8,8 +8,12 @@ import {
   REMOVE_FROM_CART,
   UPDATE_CART_QUANTITY,
   ADD_TO_CART,
-  UPDATE_PRODUCTS,
 } from '../utils/actions';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  updateProducts,
+  selectProducts
+} from '../app/productsSlice';
 import { QUERY_PRODUCTS } from '../utils/queries';
 import { idbPromise } from '../utils/helpers';
 import spinner from '../assets/spinner.gif';
@@ -17,12 +21,14 @@ import spinner from '../assets/spinner.gif';
 function Detail() {
   const [state, dispatch] = useStoreContext();
   const { id } = useParams();
+  const dispatch2 = useDispatch();
 
   const [currentProduct, setCurrentProduct] = useState({});
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = state;
+  const { cart } = state;
+  const products = useSelector(selectProducts);
 
   useEffect(() => {
     // already in global store
@@ -31,10 +37,7 @@ function Detail() {
     }
     // retrieved from server
     else if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products,
-      });
+      dispatch2(updateProducts(data.products));
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -43,10 +46,7 @@ function Detail() {
     // get cache from idb
     else if (!loading) {
       idbPromise('products', 'get').then((indexedProducts) => {
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: indexedProducts,
-        });
+        dispatch2(updateProducts(indexedProducts));
       });
     }
   }, [products, data, loading, dispatch, id]);

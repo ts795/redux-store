@@ -1,6 +1,5 @@
 import { useReducer } from "react";
 import {
-  UPDATE_PRODUCTS,
   ADD_TO_CART,
   UPDATE_CART_QUANTITY,
   REMOVE_FROM_CART,
@@ -13,12 +12,6 @@ import {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case UPDATE_PRODUCTS:
-      return {
-        ...state,
-        products: [...action.products],
-      };
-
     case ADD_TO_CART:
       return {
         ...state,

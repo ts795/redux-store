@@ -4,18 +4,32 @@ export const categoriesSlice = createSlice({
     name: 'categories',
     initialState: {
         value: [],
-        currentCategory: '' 
+        currentCategory: ''
     },
     reducers: {
-        updateCategories: (state, action) => {
-            // Redux Toolkit allows us to write "mutating" logic in reducers. It
-            // doesn't actually mutate the state because it uses the immer library,
-            // which detects changes to a "draft state" and produces a brand new
-            // immutable state based off those changes
-            state.value = [...action.categories];
+        updateCategories: {
+            reducer(state, action) {
+                // Redux Toolkit allows us to write "mutating" logic in reducers. It
+                // doesn't actually mutate the state because it uses the immer library,
+                // which detects changes to a "draft state" and produces a brand new
+                // immutable state based off those changes
+                state.value = [...action.payload];
+            },
+            prepare(categories) {
+                let categoriesList = categories ? categories : [];
+                return {
+                    payload: categoriesList
+                }
+            }
         },
-        updateCurrentCategory: (state, action) => {
-            state.currentCategory = action.currentCategory;
+        updateCurrentCategory: {
+            reducer(state, action) {
+                state.currentCategory = action.payload;
+            }, prepare(currentCategory) {
+                return {
+                    payload: currentCategory
+                }
+            }
         }
     }
 });
